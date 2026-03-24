@@ -1,26 +1,23 @@
-import { useState, useReducer } from 'react'
+import { useState } from 'react'
 import './App.css'
-const reducer = (state, action) => {
-  switch (action.type) {
-    case "INCREASE":
-      return state + 1;
-    case "DECREASE":
-      return state - 1;
-    case "RESET":
-      return 0;
-    default:
-      return state;
-  }
-};
+import React from 'react';
+const Child = React.memo(({ count }) => {
+  console.log("child render");
+  return <h2>count:{count}</h2>
+});
 function App() {
-  const [count, dispatch] = useReducer(reducer, 0);
+  const [count, setCount] = useState(0);
+  const [text, setText] = useState("");
+  // tránh re-render component con
   return (
     <>
-      <h1>{count}</h1>
-      <div className='btn-group'>
-        <button onClick={() => dispatch({ type: "INCREASE" })}>INCREASE</button>
-        <button onClick={() => dispatch({ type: "DECREASE" })}>DECREASE</button>
-        <button onClick={() => dispatch({ type: "RESET" })}>RESET</button>
+      <Child count={count} />
+      <div className='btn group'>
+        <button onClick={() => setCount(count + 1)}>Increase</button>
+        <input
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+        />
       </div>
     </>
   )
