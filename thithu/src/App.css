@@ -10,3 +10,7 @@ button {
   cursor: pointer;
   padding: 10px 20px;
 }
+
+p {
+  font-weight: bold;
+}

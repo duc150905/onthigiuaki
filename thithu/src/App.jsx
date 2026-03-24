@@ -1,20 +1,24 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0);
-  const handleIncrease = () => setCount(count + 1);
-  const handleDecrease = () => setCount(count - 1);
-  const handleReset = () => setCount(0);
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    const fetchdata = async () => {
+      const res = await fetch("https://jsonplaceholder.typicode.com/posts");
+      const data = await res.json();
+      setData(data);
+    }
+    fetchdata();
+  }, [])
   return (
     <>
-      <h1>{count}</h1>
-      <div className='btn-group'>
-        <button onClick={handleIncrease}>Increase</button>
-        <button onClick={handleDecrease}>Decrease</button>
-        <button onClick={handleReset}>Reset</button>
-      </div>
-
+      {data.map((item) => (
+        <div key={item.id}>
+          <p>id: {item.id}</p>
+          <p>title: {item.title}</p>
+        </div>
+      ))}
     </>
   )
 }
