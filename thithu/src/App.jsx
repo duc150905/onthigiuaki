@@ -1,24 +1,27 @@
-import { useState, useEffect } from 'react'
+import { useState, useReducer } from 'react'
 import './App.css'
-
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "INCREASE":
+      return state + 1;
+    case "DECREASE":
+      return state - 1;
+    case "RESET":
+      return 0;
+    default:
+      return state;
+  }
+};
 function App() {
-  const [data, setData] = useState([]);
-  useEffect(() => {
-    const fetchdata = async () => {
-      const res = await fetch("https://jsonplaceholder.typicode.com/posts");
-      const data = await res.json();
-      setData(data);
-    }
-    fetchdata();
-  }, [])
+  const [count, dispatch] = useReducer(reducer, 0);
   return (
     <>
-      {data.map((item) => (
-        <div key={item.id}>
-          <p>id: {item.id}</p>
-          <p>title: {item.title}</p>
-        </div>
-      ))}
+      <h1>{count}</h1>
+      <div className='btn-group'>
+        <button onClick={() => dispatch({ type: "INCREASE" })}>INCREASE</button>
+        <button onClick={() => dispatch({ type: "DECREASE" })}>DECREASE</button>
+        <button onClick={() => dispatch({ type: "RESET" })}>RESET</button>
+      </div>
     </>
   )
 }
